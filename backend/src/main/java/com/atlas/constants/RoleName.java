@@ -1,0 +1,10 @@
+package com.atlas.constants;
+
+public enum RoleName {
+	ADMINISTRATOR,
+	TECHNICAL_WRITER,
+	REVIEWER,
+	MAINTENANCE_ENGINEER,
+	TECHNICIAN,
+	TRAINER
+}

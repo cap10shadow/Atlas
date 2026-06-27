@@ -1,0 +1,9 @@
+package com.atlas.authentication.repository;
+
+import com.atlas.authentication.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
+
+public interface UserRepository extends JpaRepository<User, UUID> {
+}

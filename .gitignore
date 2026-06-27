@@ -1,0 +1,37 @@
+# Environment
+.env
+.env.local
+
+# Backend (Gradle / Java)
+backend/.gradle/
+backend/build/
+backend/bin/
+backend/out/
+*.class
+*.jar
+!backend/gradle/wrapper/gradle-wrapper.jar
+
+# Frontend (Next.js / Node)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/next-env.d.ts
+npm-debug.log*
+
+# Storage uploads (keep directory structure, ignore contents)
+storage/**/*
+!storage/**/
+!storage/**/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+.claude/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

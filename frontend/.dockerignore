@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+*.log
+
+.git/
+.gitignore
+.gitattributes
+.editorconfig
+
+.idea/
+.vscode/
+*.iml
+
+Dockerfile
+.dockerignore

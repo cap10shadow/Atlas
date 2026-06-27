@@ -1,0 +1,20 @@
+* text=auto eol=lf
+
+*.bat text eol=crlf
+gradlew text eol=lf
+gradlew.bat text eol=crlf
+
+*.jar binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+
+package-lock.json linguist-generated=true
+backend/gradle/wrapper/gradle-wrapper.jar linguist-generated=true
+backend/gradle/wrapper/gradle-wrapper.properties linguist-generated=true
