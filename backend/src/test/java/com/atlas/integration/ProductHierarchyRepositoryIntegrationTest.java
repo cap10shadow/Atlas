@@ -32,10 +32,12 @@ class ProductHierarchyRepositoryIntegrationTest {
 	@Test
 	void seededRadarSystemHierarchyIsComplete() {
 		List<Product> products = productRepository.findAll();
-		assertThat(products).hasSize(1);
+		assertThat(products).hasSize(4);
 
-		Product radarSystem = products.get(0);
-		assertThat(radarSystem.getProductCode()).isEqualTo("PRD-RADAR-001");
+		Product radarSystem = products.stream()
+				.filter(p -> p.getProductCode().equals("PRD-RADAR-001"))
+				.findFirst()
+				.orElseThrow();
 		assertThat(radarSystem.getName()).isEqualTo("Radar System");
 
 		Optional<Product> foundById = productRepository.findById(radarSystem.getId());
@@ -54,5 +56,20 @@ class ProductHierarchyRepositoryIntegrationTest {
 		Part coolingFan = parts.get(0);
 		assertThat(coolingFan.getPartNumber()).isEqualTo("PRT-FAN-001");
 		assertThat(coolingFan.getName()).isEqualTo("Cooling Fan");
+	}
+
+	@Test
+	void shellProductsExistWithNoAssemblies() {
+		List<Product> products = productRepository.findAll();
+		List<String> shellCodes = List.of("PRD-COMM-001", "PRD-MISSILE-001", "PRD-NAV-001");
+
+		for (String code : shellCodes) {
+			Product shellProduct = products.stream()
+					.filter(p -> p.getProductCode().equals(code))
+					.findFirst()
+					.orElseThrow();
+
+			assertThat(assemblyRepository.findByProductId(shellProduct.getId())).isEmpty();
+		}
 	}
 }

@@ -81,12 +81,14 @@ class ProductHierarchyApiIntegrationTest {
 	}
 
 	@Test
-	void getAllProductsReturnsSeededRadarSystem() throws Exception {
+	void getAllProductsReturnsAllFourSeededProducts() throws Exception {
 		mockMvc.perform(get("/api/v1/products").header("Authorization", "Bearer " + token))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.data.length()").value(1))
-				.andExpect(jsonPath("$.data[0].productCode").value("PRD-RADAR-001"))
-				.andExpect(jsonPath("$.data[0].name").value("Radar System"));
+				.andExpect(jsonPath("$.data.length()").value(4))
+				.andExpect(jsonPath("$.data[?(@.productCode == 'PRD-RADAR-001')].name").value("Radar System"))
+				.andExpect(jsonPath("$.data[?(@.productCode == 'PRD-COMM-001')].name").value("Communication System"))
+				.andExpect(jsonPath("$.data[?(@.productCode == 'PRD-MISSILE-001')].name").value("Missile Guidance System"))
+				.andExpect(jsonPath("$.data[?(@.productCode == 'PRD-NAV-001')].name").value("Navigation Computer"));
 	}
 
 	@Test
@@ -123,6 +125,19 @@ class ProductHierarchyApiIntegrationTest {
 	void getAssembliesForUnknownProductReturns404() throws Exception {
 		mockMvc.perform(get("/api/v1/products/" + UUID.randomUUID() + "/assemblies").header("Authorization", "Bearer " + token))
 				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void getAssembliesForShellProductReturnsEmptyList() throws Exception {
+		Product communicationSystem = productRepository.findAll().stream()
+				.filter(p -> p.getProductCode().equals("PRD-COMM-001"))
+				.findFirst()
+				.orElseThrow();
+
+		mockMvc.perform(get("/api/v1/products/" + communicationSystem.getId() + "/assemblies")
+						.header("Authorization", "Bearer " + token))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.length()").value(0));
 	}
 
 	@Test
