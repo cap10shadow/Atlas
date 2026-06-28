@@ -9,3 +9,11 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+
+atlas:
+  jwt:
+    secret: atlas-test-only-jwt-signing-secret-do-not-use-in-production-0987654321
+    expiration-ms: 43200000
+    issuer: atlas
+  cors:
+    allowed-origin: http://localhost:3000

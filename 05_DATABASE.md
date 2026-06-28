@@ -114,10 +114,13 @@ Stores authenticated platform users.
 ### Typical Fields
 
 * id
-* username
 * email
 * password_hash
+* first_name
+* last_name
 * role_id
+* enabled
+* last_login
 * status
 
 ### Relationships
@@ -137,6 +140,12 @@ Stores authenticated platform users.
 ### Purpose
 
 Defines user permissions.
+
+### Typical Fields
+
+* id
+* name
+* description
 
 ### Example Roles
 
@@ -410,6 +419,8 @@ Examples
 * UUID Primary Keys
 * Foreign Key Constraints
 * NOT NULL where appropriate
+* Unique User Emails
+* Unique Role Names
 * Unique Product Codes
 * Unique Part Numbers
 * Unique Document Numbers

@@ -1,3 +1,9 @@
+import { ProtectedRoute } from "@/authentication/ProtectedRoute";
+
 export default function AdministrationPage() {
-	return <h1 className="text-2xl font-semibold">Administration</h1>;
+	return (
+		<ProtectedRoute>
+			<h1 className="text-2xl font-semibold">Administration</h1>
+		</ProtectedRoute>
+	);
 }

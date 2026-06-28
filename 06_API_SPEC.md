@@ -145,6 +145,10 @@ GET    /auth/me
 * LoginResponse
 * UserProfileResponse
 
+### Error DTO
+
+* AuthErrorResponse — returned for invalid-credential failures (`401 INVALID_CREDENTIALS`). Mirrors the standard error response (`success`, `message`, `errorCode`, `timestamp`) but omits the `errors` array, since credential failures are always a single, deliberately generic message. All other failures on this module (validation, missing/invalid JWT) use the standard `ApiErrorResponse` shape, including `errors`.
+
 ---
 
 # Products Module
@@ -439,7 +443,7 @@ Every successful response follows the same structure.
 
 # Security
 
-Authentication is required for all endpoints except authentication endpoints.
+Authentication is required for all endpoints except `POST /auth/login` and the `/actuator/health` and `/actuator/info` health-check endpoints.
 
 Authorization is enforced using Role-Based Access Control (RBAC).
 
