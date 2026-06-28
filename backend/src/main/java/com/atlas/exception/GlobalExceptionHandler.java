@@ -7,6 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 
@@ -17,6 +18,13 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiErrorResponse> handleApiException(ApiException ex) {
 		return ResponseEntity.status(ex.getStatus())
 				.body(ApiErrorResponse.of(ex.getMessage(), ex.getErrorCode(), List.of()));
+	}
+
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<ApiErrorResponse> handleTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+		String message = "Invalid value for parameter '" + ex.getName() + "'.";
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.body(ApiErrorResponse.of(message, "INVALID_PARAMETER", List.of()));
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
