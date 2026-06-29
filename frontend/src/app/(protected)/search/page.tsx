@@ -14,6 +14,14 @@ import { SearchResultRow } from "@/search/SearchResultRow";
 
 const GROUP_ORDER: SearchResultType[] = ["Product", "Assembly", "Part", "Document", "Training"];
 
+const GROUP_LABELS: Record<SearchResultType, string> = {
+	Product: "Products",
+	Assembly: "Assemblies",
+	Part: "Parts",
+	Document: "Documents",
+	Training: "Training",
+};
+
 export default function SearchPage() {
 	usePageTitle("Search");
 
@@ -98,7 +106,7 @@ export default function SearchPage() {
 
 						return (
 							<section key={type}>
-								<SectionHeading>{type === "Product" ? "Products" : `${type}s`}</SectionHeading>
+								<SectionHeading>{GROUP_LABELS[type]}</SectionHeading>
 								<div className="flex flex-col gap-2">
 									{items.map((item) => (
 										<SearchResultRow key={`${item.type}-${item.id}`} result={item} />

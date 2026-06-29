@@ -47,6 +47,16 @@ These can be introduced later without changing the core hierarchy.
 
 ---
 
+# Implementation Status (Prototype v1.0)
+
+The entities and fields below describe the complete target logical model. In this prototype, only **User, Role, Product, Assembly, and Part** are backed by real tables (see the Flyway migrations under `backend/src/main/resources/db/migration`).
+
+**Document, Procedure, Training, and Media have no database tables yet** — their entity classes exist only as empty placeholders extending `BaseEntity`, with none of the typical fields listed below implemented. The `parent_assembly_id` field on Assembly (for optional Sub Assemblies) is also part of the target model only and does not exist in the current schema.
+
+The prototype's Documentation, Training, and Search experiences are implemented entirely in the frontend using static demo content, not the schema described below. Implementing this schema is deferred to the future Atlas Platform (Portfolio Edition).
+
+---
+
 # Database Design Strategy
 
 Atlas follows a normalized relational database design.

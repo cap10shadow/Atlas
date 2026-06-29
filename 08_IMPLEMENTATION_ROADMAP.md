@@ -76,6 +76,30 @@ Production Readiness
 
 ---
 
+# Actual Implementation Path (Prototype v1.0)
+
+The sequence above was the original plan. Atlas was actually released as **Prototype v1.0** via a revised path:
+
+```text
+Gate 1 — Project Foundation              ✔ Complete
+Gate 2 — Authentication                  ✔ Complete
+Gate 3 — Core Product Hierarchy          ✔ Complete (Sessions 1–3; intentionally read-only — see 11_GATE3_IMPLEMENTATION_PLAN.md)
+UI Polish Session                        ✔ Complete (frontend visual refinement only)
+Prototype Enhancement Session            ✔ Complete (frontend-only Documentation, Training, Search,
+                                            and Profile experiences using static demo content)
+Gate 4 — Final Validation & Release Prep ✔ Complete (this document's plan was superseded by
+                                            13_GATE4_IMPLEMENTATION_PLAN.md — no new features,
+                                            validation and release readiness only)
+```
+
+The original Gates 4–7 below (Documentation Module, Training Module, Search, Administration) describe **full backend implementations** that were intentionally **not built** for Prototype v1.0. Instead, the Prototype Enhancement Session delivered equivalent frontend-only experiences using static demo content, with zero new backend APIs. Gate 8 (Production Readiness) was effectively replaced by the UI Polish, Prototype Enhancement, and Gate 4 sessions.
+
+Building the real backend persistence and APIs for Documents, Procedures, Training, Media, Search, and Administration — i.e., completing Gates 4–8 as originally scoped below — is deferred to the future **Atlas Platform (Portfolio Edition)**.
+
+The gate descriptions below are preserved as the original target design and remain a valid reference for that future work.
+
+---
+
 # Gate 1 — Project Foundation
 
 ## Objective

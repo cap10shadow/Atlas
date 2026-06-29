@@ -301,6 +301,16 @@ Shared Utilities
 
 ---
 
+# Implementation Status (Prototype v1.0)
+
+The module structures above describe the target design for the full Atlas Platform. In this prototype:
+
+* **Fully implemented** (backend + database + REST API + frontend): Authentication, Products, Assemblies, Parts.
+* **Scaffolded only** (module folders and empty entity/controller classes exist to preserve the architecture, but contain no fields, persistence, or endpoints): Documents, Procedures, Training, Media, Search, Administration.
+* The frontend Documents, Training, Search, and Profile experiences are implemented as **frontend-only modules** using static demo content, deliberately without new backend APIs. They demonstrate the intended user experience ahead of the backend modules listed above, which are deferred to the future Atlas Platform (Portfolio Edition).
+
+---
+
 # Domain Model
 
 Atlas revolves around a hierarchical engineering product model.

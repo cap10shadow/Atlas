@@ -116,6 +116,16 @@ ISO-8601
 
 ---
 
+# Implementation Status (Prototype v1.0)
+
+This document specifies the complete target API surface. In this prototype:
+
+* **Implemented**: `AuthController` (login/logout/me), `ProductController`, `AssemblyController`, `PartController` — the latter three expose **read-only `GET` endpoints only**; this was an intentional scope decision for the prototype, not an oversight (write operations are deferred to a future Administration module).
+* **Not implemented** (controllers are empty scaffolding with no endpoints): `DocumentController`, `ProcedureController`, `TrainingController`, `MediaController`, `SearchController`, `AdminController`.
+* The prototype's Documentation, Training, and Search experiences are delivered entirely by the frontend using static demo content — they do not call the endpoints described below for those modules. Implementing these APIs is deferred to the future Atlas Platform (Portfolio Edition).
+
+---
+
 # Authentication Module
 
 ## Controller
