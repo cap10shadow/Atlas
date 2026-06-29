@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { PageHeaderProvider } from "@/components/layout/PageHeaderContext";
 import { Sidebar } from "@/components/layout/Sidebar";
 
@@ -18,6 +19,7 @@ export function AppShell({ children }: AppShellProps) {
 						<div className="mx-auto w-full max-w-[1440px] p-4 md:p-6 lg:p-8">{children}</div>
 					</main>
 				</div>
+				<Footer />
 			</div>
 		</PageHeaderProvider>
 	);

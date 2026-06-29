@@ -3,12 +3,14 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { clearStoredToken, getStoredToken, setStoredToken } from "@/services/api-client";
 import { getCurrentUser, login as loginRequest, logout as logoutRequest } from "@/authentication/authService";
-import { AuthContextValue, User } from "@/authentication/authTypes";
+import { AuthContextValue, SessionInfo, User } from "@/authentication/authTypes";
+import { clearStoredSession, getStoredSession, setStoredSession } from "@/authentication/sessionStorage";
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
+	const [session, setSession] = useState<SessionInfo | null>(() => getStoredSession());
 	const [isLoading, setIsLoading] = useState<boolean>(() => getStoredToken() !== null);
 	const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +24,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			.then(setUser)
 			.catch(() => {
 				clearStoredToken();
+				clearStoredSession();
 				setUser(null);
+				setSession(null);
 			})
 			.finally(() => setIsLoading(false));
 	}, []);
@@ -32,7 +36,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		try {
 			const response = await loginRequest({ email, password });
 			setStoredToken(response.token);
+			const sessionInfo: SessionInfo = {
+				loginAt: new Date().toISOString(),
+				expiresInSeconds: response.expiresInSeconds,
+				tokenType: response.tokenType,
+			};
+			setStoredSession(sessionInfo);
 			setUser(response.user);
+			setSession(sessionInfo);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : "Login failed.";
 			setError(message);
@@ -47,12 +58,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			// The token may already be invalid or expired; proceed with local logout regardless.
 		} finally {
 			clearStoredToken();
+			clearStoredSession();
 			setUser(null);
+			setSession(null);
 		}
 	}, []);
 
 	const value: AuthContextValue = {
 		user,
+		session,
 		isAuthenticated: user !== null,
 		isLoading,
 		error,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -16,7 +17,8 @@ import { getAssemblyById } from "@/assemblies/assemblyService";
 import { Assembly } from "@/assemblies/assemblyTypes";
 import { getProductById } from "@/products/productService";
 import { Product } from "@/products/productTypes";
-import { getDemoDocuments, getDemoTrainingResources } from "@/parts/partDemoContent";
+import { getDocumentsByPartNumber } from "@/documents/documentDemoContent";
+import { getTrainingResourcesByPartNumber } from "@/training/trainingDemoContent";
 import { DocumentationSection } from "@/parts/DocumentationSection";
 import { TrainingSection } from "@/parts/TrainingSection";
 import { ApiError } from "@/services/api-client";
@@ -76,8 +78,8 @@ export default function PartDetailsPage() {
 		);
 	}
 
-	const documents = getDemoDocuments(part.partNumber);
-	const trainingResources = getDemoTrainingResources(part.partNumber);
+	const documents = getDocumentsByPartNumber(part.partNumber);
+	const trainingResources = getTrainingResourcesByPartNumber(part.partNumber);
 
 	return (
 		<div className="flex flex-col gap-6">
@@ -91,7 +93,10 @@ export default function PartDetailsPage() {
 				]}
 			/>
 
-			<DetailPageHeader title={part.name} identifier={part.partNumber} description={part.description} />
+			<section>
+				<SectionHeading>Overview</SectionHeading>
+				<DetailPageHeader title={part.name} identifier={part.partNumber} description={part.description} />
+			</section>
 
 			<section>
 				<SectionHeading>Documentation</SectionHeading>
@@ -104,11 +109,35 @@ export default function PartDetailsPage() {
 			</section>
 
 			<section>
-				<SectionHeading>Part Information</SectionHeading>
+				<SectionHeading>Technical Information</SectionHeading>
 				<InfoCard
 					fields={[
 						{ label: "Part Number", value: part.partNumber },
 						{ label: "Status", value: <Badge variant={getStatusBadgeVariant(part.status)}>{part.status}</Badge> },
+					]}
+				/>
+			</section>
+
+			<section>
+				<SectionHeading>Related Resources</SectionHeading>
+				<InfoCard
+					fields={[
+						{
+							label: "Related Product",
+							value: (
+								<Link href={`/products/${product.id}`} className="text-primary hover:underline">
+									{product.name}
+								</Link>
+							),
+						},
+						{
+							label: "Related Assembly",
+							value: (
+								<Link href={`/assemblies/${assembly.id}`} className="text-primary hover:underline">
+									{assembly.name}
+								</Link>
+							),
+						},
 					]}
 				/>
 			</section>

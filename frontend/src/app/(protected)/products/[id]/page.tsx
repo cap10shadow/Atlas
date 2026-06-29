@@ -86,8 +86,8 @@ export default function ProductDetailsPage() {
 				{assemblies.length === 0 ? (
 					<EmptyState
 						icon={PackageSearch}
-						title="No Assemblies Yet"
-						description="No assemblies have been created for this product yet."
+						title="No Assemblies Published"
+						description="No assemblies have been published for this product."
 					/>
 				) : (
 					<AssemblyTable assemblies={assemblies} />

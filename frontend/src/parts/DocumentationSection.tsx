@@ -1,10 +1,10 @@
 import { FileText } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/EmptyState";
-import { DemoDocument } from "@/parts/partDemoContent";
+import { EngineeringDocument } from "@/documents/documentTypes";
+import { DocumentCard } from "@/documents/DocumentCard";
 
 interface DocumentationSectionProps {
-	documents: DemoDocument[];
+	documents: EngineeringDocument[];
 }
 
 export function DocumentationSection({ documents }: DocumentationSectionProps) {
@@ -13,7 +13,7 @@ export function DocumentationSection({ documents }: DocumentationSectionProps) {
 			<EmptyState
 				icon={FileText}
 				title="No Documentation Available"
-				description="Documentation has not yet been added for this part."
+				description="No engineering documents have been linked to this part."
 			/>
 		);
 	}
@@ -21,13 +21,7 @@ export function DocumentationSection({ documents }: DocumentationSectionProps) {
 	return (
 		<div className="flex flex-col gap-2">
 			{documents.map((document) => (
-				<Card key={document.id} className="flex-row items-center gap-3 py-3">
-					<FileText className="size-5 flex-shrink-0 text-muted-foreground" aria-hidden="true" />
-					<div>
-						<h4 className="text-sm font-semibold text-foreground">{document.title}</h4>
-						<p className="text-sm text-muted-foreground">{document.documentType}</p>
-					</div>
-				</Card>
+				<DocumentCard key={document.id} document={document} />
 			))}
 		</div>
 	);

@@ -18,8 +18,15 @@ export interface LoginResponse {
 	user: User;
 }
 
+export interface SessionInfo {
+	loginAt: string;
+	expiresInSeconds: number;
+	tokenType: string;
+}
+
 export interface AuthContextValue {
 	user: User | null;
+	session: SessionInfo | null;
 	isAuthenticated: boolean;
 	isLoading: boolean;
 	error: string | null;
