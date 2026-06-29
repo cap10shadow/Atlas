@@ -20,9 +20,9 @@ export function TrainingSection({ resources }: TrainingSectionProps) {
 	}
 
 	return (
-		<div className="flex flex-col gap-3">
+		<div className="flex flex-col gap-2">
 			{resources.map((resource) => (
-				<Card key={resource.id} className="flex-row items-start gap-3">
+				<Card key={resource.id} className="flex-row items-start gap-3 py-3">
 					<GraduationCap className="size-5 flex-shrink-0 text-muted-foreground" aria-hidden="true" />
 					<div className="flex flex-1 flex-col gap-1">
 						<div className="flex items-center justify-between gap-2">

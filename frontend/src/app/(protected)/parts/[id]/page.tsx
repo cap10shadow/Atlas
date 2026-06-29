@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { DetailPageHeader } from "@/components/layout/DetailPageHeader";
+import { SectionHeading } from "@/components/layout/SectionHeading";
+import { InfoCard } from "@/components/layout/InfoCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorState } from "@/components/ErrorState";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Badge, getStatusBadgeVariant } from "@/components/ui/badge";
 import { getPartById } from "@/parts/partService";
 import { Part } from "@/parts/partTypes";
 import { getAssemblyById } from "@/assemblies/assemblyService";
@@ -57,7 +59,7 @@ export default function PartDetailsPage() {
 
 	if (error) {
 		return (
-			<div className="flex flex-col gap-6">
+			<div className="flex flex-col gap-5">
 				<Breadcrumbs items={[{ label: "Dashboard", href: "/dashboard" }, { label: "Products", href: "/products" }]} />
 				<ErrorState title={error} description="Please go back to Products and try again." />
 			</div>
@@ -66,10 +68,10 @@ export default function PartDetailsPage() {
 
 	if (!part || !assembly || !product) {
 		return (
-			<div className="flex flex-col gap-6">
+			<div className="flex flex-col gap-5">
 				<Skeleton className="h-5 w-64" />
-				<Skeleton className="h-20 w-full" />
-				<Skeleton className="h-32 w-full" />
+				<Skeleton className="h-16 w-full" />
+				<Skeleton className="h-28 w-full" />
 			</div>
 		);
 	}
@@ -78,7 +80,7 @@ export default function PartDetailsPage() {
 	const trainingResources = getDemoTrainingResources(part.partNumber);
 
 	return (
-		<div className="flex flex-col gap-8">
+		<div className="flex flex-col gap-6">
 			<Breadcrumbs
 				items={[
 					{ label: "Dashboard", href: "/dashboard" },
@@ -89,38 +91,26 @@ export default function PartDetailsPage() {
 				]}
 			/>
 
-			<div className="flex flex-col gap-2 border-b border-border pb-6">
-				<div className="flex items-center gap-3">
-					<h2 className="text-2xl font-bold text-foreground">{part.name}</h2>
-					<Badge variant="blue">{part.partNumber}</Badge>
-				</div>
-				{part.description && <p className="text-sm text-muted-foreground">{part.description}</p>}
-			</div>
+			<DetailPageHeader title={part.name} identifier={part.partNumber} description={part.description} />
 
 			<section>
-				<h3 className="mb-4 text-lg font-semibold text-foreground">Documentation</h3>
+				<SectionHeading>Documentation</SectionHeading>
 				<DocumentationSection documents={documents} />
 			</section>
 
 			<section>
-				<h3 className="mb-4 text-lg font-semibold text-foreground">Training</h3>
+				<SectionHeading>Training</SectionHeading>
 				<TrainingSection resources={trainingResources} />
 			</section>
 
 			<section>
-				<h3 className="mb-4 text-lg font-semibold text-foreground">Part Information</h3>
-				<Card>
-					<dl className="grid grid-cols-2 gap-4 text-sm">
-						<div>
-							<dt className="text-muted-foreground">Part Number</dt>
-							<dd className="font-medium text-foreground">{part.partNumber}</dd>
-						</div>
-						<div>
-							<dt className="text-muted-foreground">Status</dt>
-							<dd className="font-medium text-foreground">{part.status}</dd>
-						</div>
-					</dl>
-				</Card>
+				<SectionHeading>Part Information</SectionHeading>
+				<InfoCard
+					fields={[
+						{ label: "Part Number", value: part.partNumber },
+						{ label: "Status", value: <Badge variant={getStatusBadgeVariant(part.status)}>{part.status}</Badge> },
+					]}
+				/>
 			</section>
 		</div>
 	);

@@ -50,12 +50,12 @@ export default function ProductsPage() {
 	}, []);
 
 	return (
-		<div className="flex flex-col gap-6">
+		<div className="flex flex-col gap-5">
 			<Breadcrumbs items={[{ label: "Dashboard", href: "/dashboard" }, { label: "Products" }]} />
 
 			<div>
-				<h2 className="text-2xl font-bold text-foreground">Products</h2>
-				<p className="mt-1 text-sm text-muted-foreground">
+				<h2 className="text-2xl font-bold tracking-tight text-foreground">Products</h2>
+				<p className="mt-0.5 text-[13px] text-muted-foreground">
 					Browse engineering products, assemblies, and parts.
 				</p>
 			</div>
@@ -63,9 +63,9 @@ export default function ProductsPage() {
 			{error ? (
 				<ErrorState title="Unable to load Products." description="Please refresh the page or try again later." />
 			) : items === null ? (
-				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
 					{Array.from({ length: 4 }).map((_, index) => (
-						<Skeleton key={index} className="h-32 w-full" />
+						<Skeleton key={index} className="h-28 w-full" />
 					))}
 				</div>
 			) : items.length === 0 ? (
@@ -75,7 +75,7 @@ export default function ProductsPage() {
 					description="Products will appear here once they are created."
 				/>
 			) : (
-				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
 					{items.map(({ product, lifecycleStatus }) => (
 						<ProductCard key={product.id} product={product} lifecycleStatus={lifecycleStatus} />
 					))}

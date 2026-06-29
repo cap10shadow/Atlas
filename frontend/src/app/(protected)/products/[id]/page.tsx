@@ -5,11 +5,13 @@ import { useParams } from "next/navigation";
 import { PackageSearch } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { DetailPageHeader } from "@/components/layout/DetailPageHeader";
+import { SectionHeading } from "@/components/layout/SectionHeading";
+import { InfoCard } from "@/components/layout/InfoCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorState } from "@/components/ErrorState";
 import { EmptyState } from "@/components/EmptyState";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Badge, getStatusBadgeVariant } from "@/components/ui/badge";
 import { getProductById } from "@/products/productService";
 import { Product } from "@/products/productTypes";
 import { getAssembliesByProductId } from "@/assemblies/assemblyService";
@@ -50,7 +52,7 @@ export default function ProductDetailsPage() {
 
 	if (error) {
 		return (
-			<div className="flex flex-col gap-6">
+			<div className="flex flex-col gap-5">
 				<Breadcrumbs items={[{ label: "Dashboard", href: "/dashboard" }, { label: "Products", href: "/products" }]} />
 				<ErrorState title={error} description="Please go back to Products and try again." />
 			</div>
@@ -59,16 +61,16 @@ export default function ProductDetailsPage() {
 
 	if (!product || assemblies === null) {
 		return (
-			<div className="flex flex-col gap-6">
+			<div className="flex flex-col gap-5">
 				<Skeleton className="h-5 w-64" />
-				<Skeleton className="h-20 w-full" />
-				<Skeleton className="h-40 w-full" />
+				<Skeleton className="h-16 w-full" />
+				<Skeleton className="h-32 w-full" />
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex flex-col gap-6">
+		<div className="flex flex-col gap-5">
 			<Breadcrumbs
 				items={[
 					{ label: "Dashboard", href: "/dashboard" },
@@ -77,21 +79,15 @@ export default function ProductDetailsPage() {
 				]}
 			/>
 
-			<div className="flex flex-col gap-2 border-b border-border pb-6">
-				<div className="flex items-center gap-3">
-					<h2 className="text-2xl font-bold text-foreground">{product.name}</h2>
-					<Badge variant="blue">{product.productCode}</Badge>
-				</div>
-				{product.description && <p className="text-sm text-muted-foreground">{product.description}</p>}
-			</div>
+			<DetailPageHeader title={product.name} identifier={product.productCode} description={product.description} />
 
 			<section>
-				<h3 className="mb-4 text-lg font-semibold text-foreground">Assemblies</h3>
+				<SectionHeading>Assemblies</SectionHeading>
 				{assemblies.length === 0 ? (
 					<EmptyState
 						icon={PackageSearch}
-						title="No Engineering Data Yet"
-						description="Engineering data has not yet been added for this product."
+						title="No Assemblies Yet"
+						description="No assemblies have been created for this product yet."
 					/>
 				) : (
 					<AssemblyTable assemblies={assemblies} />
@@ -99,19 +95,13 @@ export default function ProductDetailsPage() {
 			</section>
 
 			<section>
-				<h3 className="mb-4 text-lg font-semibold text-foreground">Product Information</h3>
-				<Card>
-					<dl className="grid grid-cols-2 gap-4 text-sm">
-						<div>
-							<dt className="text-muted-foreground">Product Code</dt>
-							<dd className="font-medium text-foreground">{product.productCode}</dd>
-						</div>
-						<div>
-							<dt className="text-muted-foreground">Status</dt>
-							<dd className="font-medium text-foreground">{product.status}</dd>
-						</div>
-					</dl>
-				</Card>
+				<SectionHeading>Product Information</SectionHeading>
+				<InfoCard
+					fields={[
+						{ label: "Product Code", value: product.productCode },
+						{ label: "Status", value: <Badge variant={getStatusBadgeVariant(product.status)}>{product.status}</Badge> },
+					]}
+				/>
 			</section>
 		</div>
 	);

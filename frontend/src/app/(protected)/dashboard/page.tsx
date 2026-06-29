@@ -4,9 +4,14 @@ import { useEffect, useState } from "react";
 import { FileText, GraduationCap, Package, Search, Settings, UserCircle } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { useAuth } from "@/authentication/AuthProvider";
+import { SectionHeading } from "@/components/layout/SectionHeading";
 import { QuickNavigationCard } from "@/dashboard/QuickNavigationCard";
 import { EngineeringOverview } from "@/dashboard/EngineeringOverview";
+import { RecentProducts } from "@/dashboard/RecentProducts";
 import { EngineeringOverviewCounts, getEngineeringOverviewCounts } from "@/dashboard/dashboardService";
+import { getAllProducts } from "@/products/productService";
+import { Product } from "@/products/productTypes";
+import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorState } from "@/components/ErrorState";
 
@@ -61,29 +66,46 @@ export default function DashboardPage() {
 	const { user } = useAuth();
 
 	const [counts, setCounts] = useState<EngineeringOverviewCounts | null>(null);
-	const [error, setError] = useState<string | null>(null);
+	const [countsError, setCountsError] = useState<string | null>(null);
+	const [products, setProducts] = useState<Product[] | null>(null);
+	const [productsError, setProductsError] = useState<string | null>(null);
 
 	useEffect(() => {
 		getEngineeringOverviewCounts()
 			.then(setCounts)
-			.catch(() => setError("Unable to load Engineering Overview."));
+			.catch(() => setCountsError("Unable to load Engineering Overview."));
+
+		getAllProducts()
+			.then(setProducts)
+			.catch(() => setProductsError("Unable to load Recent Products."));
 	}, []);
 
 	const fullName = user ? [user.firstName, user.lastName].filter(Boolean).join(" ") : "";
 
 	return (
-		<div className="flex flex-col gap-8">
+		<div className="flex flex-col gap-6">
 			<section>
-				<h2 className="text-2xl font-bold text-foreground">
+				<h2 className="text-2xl font-bold tracking-tight text-foreground">
 					{getGreeting()}
 					{fullName ? `, ${fullName}` : ""}
 				</h2>
-				<p className="mt-1 text-sm text-muted-foreground">Engineering Documentation Platform</p>
+				<p className="mt-0.5 text-[13px] text-muted-foreground">Engineering Documentation Platform</p>
 			</section>
 
 			<section>
-				<h3 className="mb-4 text-lg font-semibold text-foreground">Quick Navigation</h3>
-				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<SectionHeading>Engineering Overview</SectionHeading>
+				{countsError ? (
+					<ErrorState title="Unable to load Engineering Overview." description="Please refresh the page or try again later." />
+				) : counts ? (
+					<EngineeringOverview counts={counts} />
+				) : (
+					<Skeleton className="h-20 w-full" />
+				)}
+			</section>
+
+			<section>
+				<SectionHeading>Quick Navigation</SectionHeading>
+				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
 					{QUICK_NAV_ITEMS.map((item) => (
 						<QuickNavigationCard key={item.href} {...item} />
 					))}
@@ -91,24 +113,19 @@ export default function DashboardPage() {
 			</section>
 
 			<section>
-				<h3 className="mb-4 text-lg font-semibold text-foreground">Engineering Overview</h3>
-				{error ? (
-					<ErrorState
-						title="Unable to load Engineering Overview."
-						description="Please refresh the page or try again later."
-					/>
-				) : counts ? (
-					<EngineeringOverview counts={counts} />
+				<SectionHeading>Recent Products</SectionHeading>
+				{productsError ? (
+					<ErrorState title="Unable to load Recent Products." description="Please refresh the page or try again later." />
+				) : products ? (
+					<RecentProducts products={products} />
 				) : (
-					<Skeleton className="h-24 w-full" />
+					<Skeleton className="h-32 w-full" />
 				)}
 			</section>
 
 			<section>
-				<h3 className="mb-4 text-lg font-semibold text-foreground">Recent Activity</h3>
-				<div className="rounded-[12px] border border-border bg-card p-6 text-sm text-muted-foreground">
-					Activity tracking will be available in a future release.
-				</div>
+				<SectionHeading>Recent Activity</SectionHeading>
+				<Card className="text-sm text-muted-foreground">Activity tracking will be available in a future release.</Card>
 			</section>
 		</div>
 	);

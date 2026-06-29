@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/utils/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap",
+  "inline-flex items-center justify-center rounded-md border px-1.5 py-0.5 text-xs font-medium w-fit whitespace-nowrap leading-none",
   {
     variants: {
       variant: {
@@ -34,4 +34,18 @@ function Badge({ className, variant, ...props }: BadgeProps) {
   )
 }
 
-export { Badge, badgeVariants }
+function getStatusBadgeVariant(status: string): VariantProps<typeof badgeVariants>["variant"] {
+  switch (status) {
+    case "ACTIVE":
+      return "green"
+    case "DRAFT":
+      return "yellow"
+    case "ARCHIVED":
+    case "INACTIVE":
+      return "gray"
+    default:
+      return "gray"
+  }
+}
+
+export { Badge, badgeVariants, getStatusBadgeVariant }

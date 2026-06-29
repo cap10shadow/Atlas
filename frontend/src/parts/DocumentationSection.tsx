@@ -19,9 +19,9 @@ export function DocumentationSection({ documents }: DocumentationSectionProps) {
 	}
 
 	return (
-		<div className="flex flex-col gap-3">
+		<div className="flex flex-col gap-2">
 			{documents.map((document) => (
-				<Card key={document.id} className="flex-row items-center gap-3">
+				<Card key={document.id} className="flex-row items-center gap-3 py-3">
 					<FileText className="size-5 flex-shrink-0 text-muted-foreground" aria-hidden="true" />
 					<div>
 						<h4 className="text-sm font-semibold text-foreground">{document.title}</h4>

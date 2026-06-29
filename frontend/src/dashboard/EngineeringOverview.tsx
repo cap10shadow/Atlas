@@ -16,9 +16,9 @@ export function EngineeringOverview({ counts }: EngineeringOverviewProps) {
 		<Card>
 			<div className="grid grid-cols-3 divide-x divide-border">
 				{stats.map((stat) => (
-					<div key={stat.label} className="flex flex-col items-center gap-1 px-4">
-						<span className="text-2xl font-semibold text-foreground">{stat.value}</span>
-						<span className="text-sm text-muted-foreground">{stat.label}</span>
+					<div key={stat.label} className="flex flex-col items-center gap-0.5 px-4">
+						<span className="text-2xl font-semibold tracking-tight text-foreground">{stat.value}</span>
+						<span className="text-xs uppercase tracking-wide text-muted-foreground">{stat.label}</span>
 					</div>
 				))}
 			</div>
